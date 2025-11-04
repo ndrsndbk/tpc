@@ -9,6 +9,9 @@
   <link rel="icon" href="/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Performance: warm up Loom origins -->
+  <link rel="preconnect" href="https://www.loom.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.loom.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box}
@@ -28,15 +31,14 @@
     .dot{width:.8rem;height:.8rem;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--orange));box-shadow:0 0 0 4px rgba(132,204,22,.15)}
     nav a{padding:.5rem .75rem;border-radius:10px;color:var(--muted);font-weight:500}
 
-/* Mobile nav: keep brand visible, hide Growth & Content so only Contact shows */
-@media (max-width: 640px){
-  .nav{gap:.25rem}
-  .brand span{white-space:nowrap}
-  nav{display:flex;gap:.25rem}
-  nav a{padding:.45rem .6rem}
-  nav a[href="#growth"],
-  nav a[href="#demos"]{display:none}
-}
+    @media (max-width: 640px){
+      .nav{gap:.25rem}
+      .brand span{white-space:nowrap}
+      nav{display:flex;gap:.25rem}
+      nav a{padding:.45rem .6rem}
+      nav a[href="#growth"],
+      nav a[href="#demos"]{display:none}
+    }
     nav a:hover{color:#0b1220;background:#f3f4f6}
 
     section{padding:2.75rem 0}
@@ -60,17 +62,12 @@
     .card:hover{transform:translateY(-4px)}
     .card h3{margin:.25rem 0 .25rem;font-weight:600}
 
-    .card.horiz{display:block}
-    .card.horiz h3{margin:0 0 .25rem}
-    .card.horiz p{margin:.25rem 0 0}
-
-    .emoji{font-size:1.15em;line-height:1;margin-right:.35rem}
-
-    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--bd);background:#000}
-    .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-
-    /* Add spacing between video cards */
-    .stack-lg>.card:not(:first-child){margin-top:2rem}
+    .grid{display:grid;gap:16px;grid-template-columns: repeat(auto-fill, minmax(280px,1fr));}
+    .video-card{position:relative;aspect-ratio:16/9;background:#0b1220;border:1px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer}
+    .video-thumb{width:100%;height:100%;object-fit:cover;display:block}
+    .play-btn{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(0deg,rgba(0,0,0,.35),rgba(0,0,0,.35));color:#fff;font-weight:700;font-size:1rem;letter-spacing:.25px}
+    .hidden{display:none}
+    .load-more{margin:16px auto;display:block}
 
     footer{padding:2rem 0;color:var(--muted);border-top:1px solid var(--bd);text-align:center;font-weight:400}
     .pill{display:inline-flex;padding:.3rem .7rem;border-radius:999px;background:#f3f4f6;color:#111827;font-size:.8rem;font-weight:700}
@@ -92,11 +89,8 @@
 <body>
   <header>
     <div class="container nav" data-reveal>
-      <a class="brand" href="#top" aria-label="The Potential Company home">
-        <span class="dot" aria-hidden="true"></span>
-        <span>The Potential Company</span>
-      </a>
-      <nav aria-label="Primary">
+      <a class="brand" href="#top"><span class="dot"></span><span>The Potential Company</span></a>
+      <nav>
         <a href="#growth">Growth</a>
         <a href="#demos">Content</a>
         <a href="#contact">Contact</a>
@@ -116,65 +110,97 @@
       </div>
     </section>
 
-    <section class="container" id="growth" aria-labelledby="growth-title">
+    <section class="container" id="growth">
       <div class="section-head" data-reveal>
-        <h2 id="growth-title">How we help good businesses grow</h2>
+        <h2>How we help good businesses grow</h2>
       </div>
       <div class="cards stagger" data-reveal>
         <article class="card horiz">
-          <h3><span class="emoji" aria-hidden="true">💚</span>Revenue Growth</h3>
+          <h3>💚 Revenue Growth</h3>
           <p class="sub">We design bespoke loyalty programs and data systems powered by Meta.</p>
         </article>
         <article class="card horiz">
-          <h3><span class="emoji" aria-hidden="true">📲</span>Product & Efficiency Growth</h3>
+          <h3>📲 Product & Efficiency Growth</h3>
           <p class="sub">We build digital products and automations tailored to each business.</p>
         </article>
         <article class="card horiz">
-          <h3><span class="emoji" aria-hidden="true">📈</span>Capital Growth</h3>
+          <h3>📈 Capital Growth</h3>
           <p class="sub">We help businesses scale through capital raising, fractional CFO services, and strategy.</p>
         </article>
       </div>
     </section>
 
-    <section class="container" id="demos" aria-labelledby="demos-title">
+    <section class="container" id="demos">
       <div class="section-head" data-reveal>
-        <h2 id="demos-title">Demos & Docs</h2>
-        <span class="pill">1–5 min clips</span>
+        <h2>Demos & Docs</h2><span class="pill">1–5 min clips</span>
       </div>
-      <div class="stack-lg">
-        <div class="card stack" data-reveal>
-          <div class="video">
-            <iframe loading="lazy" src="https://www.loom.com/embed/03d75c4154d04767b579ab71659d4d34"  title="Demo: WhatsApp Loyalty Flow" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+      <div id="videoGrid" class="grid" data-reveal>
+        <!-- First video: permanent embed -->
+        <div class="card stack video-card">
+          <div style="position: relative; padding-bottom: 62.5%; height: 0;">
+            <iframe src="https://www.loom.com/embed/45f31603ae1849ff97bb9c009d7269a3"
+              frameborder="0"
+              webkitallowfullscreen
+              mozallowfullscreen
+              allowfullscreen
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+            </iframe>
           </div>
-          <p class="sub">Meta Loyalty: WhatsApp stamp card for F&B</p>
         </div>
-        <div class="card stack" data-reveal>
-          <div class="video">
-            <iframe loading="lazy" src="" title="Demo: Prototype Walkthrough" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="sub">Meta Loyalty: Check-in & member feedback for gyms [COMING SOON]</p>
+
+        <!-- Remaining videos (click-to-load) -->
+        <div class="card stack video-card" data-loom-id="LOOM_ID_2">
+          <img class="video-thumb" src="/thumbs/loom2.jpg" alt="Gym member check-in demo thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card" data-loom-id="LOOM_ID_3">
+          <img class="video-thumb" src="/thumbs/loom3.jpg" alt="Database enrichment demo thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card" data-loom-id="LOOM_ID_4">
+          <img class="video-thumb" src="/thumbs/loom4.jpg" alt="Stamp-to-offer automation thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card hidden" data-loom-id="LOOM_ID_5">
+          <img class="video-thumb" src="/thumbs/loom5.jpg" alt="Operational dashboard thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card hidden" data-loom-id="LOOM_ID_6">
+          <img class="video-thumb" src="/thumbs/loom6.jpg" alt="Supabase data plumbing thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card hidden" data-loom-id="LOOM_ID_7">
+          <img class="video-thumb" src="/thumbs/loom7.jpg" alt="Smart voucher concept thumbnail">
+          <div class="play-btn">▶ Play</div>
+        </div>
+
+        <div class="card stack video-card hidden" data-loom-id="LOOM_ID_8">
+          <img class="video-thumb" src="/thumbs/loom8.jpg" alt="Content ops thumbnail">
+          <div class="play-btn">▶ Play</div>
         </div>
       </div>
+
+      <button id="loadMore" class="btn btn-outline load-more">Load more</button>
+      <p class="sub" style="margin-top:.25rem">Only the videos you open are loaded, improving speed.</p>
     </section>
 
-    <section class="container" id="contact" aria-labelledby="contact-title">
+    <section class="container" id="contact">
       <div class="section-head" data-reveal>
-        <h2 id="contact-title">Connect with Us</h2>
+        <h2>Connect with Us</h2>
       </div>
       <div class="cards" style="grid-template-columns:1fr;">
         <div class="card stack" data-reveal>
           <p class="kicker">Let’s achieve potential together.</p>
           <div class="stack">
             <a class="btn btn-primary" href="mailto:daniel@thepotentialcompany.com">Email: connect@thepotentialcompany.com</a>
-            <a class="btn btn-outline" href="https://www.linkedin.com/in/andersondbk" target="_blank" rel="noopener">Follow on LinkedIn</a>
-            <a class="btn btn-outline" href="https://wa.me/84936094972?text=HEY_TPC!" target="_blank" rel="noopener">
-              <span class="icon">
-                <svg class="icon-wa" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path fill="#25D366" d="M16.04 3.2c-7.06 0-12.8 5.73-12.8 12.79 0 2.26.59 4.37 1.62 6.2L3.2 28.8l6.77-1.75a12.76 12.76 0 0 0 6.07 1.55c7.06 0 12.8-5.73 12.8-12.8 0-7.06-5.74-12.8-12.8-12.8Zm0 23.18c-2.1 0-4.05-.62-5.68-1.69l-.41-.27-4.02 1.04 1.07-3.92-.29-.4a10.6 10.6 0 1 1 9.33 5.24Zm5.83-7.93c-.32-.16-1.89-.93-2.18-1.03-.29-.11-.5-.16-.72.16-.21.32-.83 1.03-1.02 1.24-.19.21-.37.24-.69.08-.32-.16-1.36-.5-2.6-1.59-.96-.82-1.6-1.83-1.79-2.14-.19-.32-.02-.49.14-.64.15-.15.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.02-.56-.08-.16-.72-1.73-.98-2.37-.26-.64-.52-.55-.72-.56h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.67s1.15 3.09 1.31 3.31c.16.21 2.26 3.45 5.48 4.83.77.33 1.36.53 1.82.68.77.24 1.47.21 2.03.13.62-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37Z"/>
-                </svg>
-              </span>
-              Chat on WhatsApp
-            </a>
+            <a class="btn btn-outline" href="https://www.linkedin.com/in/andersondbk" target="_blank">Follow on LinkedIn</a>
+            <a class="btn btn-outline" href="https://wa.me/84936094972?text=HEY_TPC!" target="_blank">Chat on WhatsApp</a>
           </div>
         </div>
       </div>
@@ -192,6 +218,31 @@
       const io=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});},{threshold:0.12});
       document.querySelectorAll('[data-reveal],.stagger').forEach(el=>io.observe(el));
     }else{document.querySelectorAll('[data-reveal],.stagger').forEach(el=>el.classList.add('is-visible'))}
+
+    function mountLoomIframe(card){
+      const id = card.dataset.loomId;
+      if(!id || id.startsWith('LOOM_ID')) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.loom.com/embed/${id}`;
+      iframe.setAttribute('allow','autoplay; fullscreen; picture-in-picture');
+      iframe.setAttribute('loading','lazy');
+      iframe.style.width='100%';iframe.style.height='100%';iframe.style.border='0';
+      card.replaceChildren(iframe);card.style.cursor='default';
+    }
+
+    const grid=document.getElementById('videoGrid');
+    grid.addEventListener('click',(e)=>{
+      const card=e.target.closest('.video-card');
+      if(!card)return;
+      if(!card.querySelector('iframe'))mountLoomIframe(card);
+    });
+
+    const loadMoreBtn=document.getElementById('loadMore');
+    loadMoreBtn.addEventListener('click',()=>{
+      const hidden=grid.querySelectorAll('.video-card.hidden');
+      hidden.forEach((el,i)=>{if(i<4)el.classList.remove('hidden');});
+      if(!grid.querySelectorAll('.video-card.hidden').length)loadMoreBtn.style.display='none';
+    });
   </script>
 </body>
 </html>
