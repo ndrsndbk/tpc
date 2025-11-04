@@ -10,10 +10,10 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Performance: warm up Loom origins -->
   <link rel="preconnect" href="https://www.loom.com" crossorigin>
   <link rel="preconnect" href="https://cdn.loom.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     *,*::before,*::after{box-sizing:border-box}
@@ -25,16 +25,23 @@
 
     .container{width:min(1024px,92%);margin-inline:auto}
     .stack{display:grid;gap:1rem}
+    .stack-lg{gap:2rem}
 
     header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0}
     .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.2px}
     .dot{width:.8rem;height:.8rem;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--orange));box-shadow:0 0 0 4px rgba(132,204,22,.15)}
     nav a{padding:.5rem .75rem;border-radius:10px;color:var(--muted);font-weight:500}
-    nav a:hover{color:#0b1220;background:#f3f4f6}
+    /* Mobile nav: keep brand visible, hide Growth & Content so only Contact shows */
     @media (max-width: 640px){
-      nav a[href="#growth"], nav a[href="#demos"]{display:none}
+      .nav{gap:.25rem}
+      .brand span{white-space:nowrap}
+      nav{display:flex;gap:.25rem}
+      nav a{padding:.45rem .6rem}
+      nav a[href="#growth"],
+      nav a[href="#demos"]{display:none}
     }
+    nav a:hover{color:#0b1220;background:#f3f4f6}
 
     section{padding:2.75rem 0}
     .hero{min-height:calc(100svh - 64px);display:grid;place-items:center;text-align:center}
@@ -48,25 +55,30 @@
 
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
     .section-head h2{margin:0;font-size:clamp(1.25rem,1rem + 1vw,1.9rem);font-weight:600}
-    .pill{display:inline-flex;padding:.3rem .7rem;border-radius:999px;background:#f3f4f6;color:#111827;font-size:.8rem;font-weight:700}
 
     .cards{display:grid;gap:1.5rem}
     @media (min-width:720px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (min-width:1200px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
     .card{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:1.2rem;box-shadow:var(--shadow);transition:transform .3s ease}
     .card:hover{transform:translateY(-4px)}
     .card h3{margin:.25rem 0 .25rem;font-weight:600}
 
-    /* VIDEO GRID + THUMBNAILS */
-    .grid{display:grid;gap:16px;grid-template-columns: repeat(auto-fill, minmax(280px,1fr));}
-    .video-card{position:relative;aspect-ratio:16/9;background:#0b1220;border:1px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer}
-    .video-card.hidden{display:none}
-    .video-thumb{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .35s ease}
-    .video-card:hover .video-thumb{transform:scale(1.03)}
-    .play-btn{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(0deg,rgba(0,0,0,.35),rgba(0,0,0,.35));color:#fff;font-weight:700;font-size:1rem;letter-spacing:.25px}
-    .load-more{margin:16px auto;display:block}
+    /* Video look (same as your previous version) */
+    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--bd);background:#000}
+    .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+    /* Poster/thumbnail overlay (fast initial load) */
+    .poster{all:unset;cursor:pointer;position:absolute;inset:0;display:block}
+    .poster img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .3s ease}
+    .video:hover .poster img{transform:scale(1.02)}
+    .play-badge{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(0deg,rgba(0,0,0,.35),rgba(0,0,0,.35));color:#fff;font-weight:700;letter-spacing:.25px}
+
+    /* Keep a touch of spacing like your stack-lg cards */
+    .stack-lg>.card:not(:first-child){margin-top:2rem}
 
     footer{padding:2rem 0;color:var(--muted);border-top:1px solid var(--bd);text-align:center;font-weight:400}
+    .pill{display:inline-flex;padding:.3rem .7rem;border-radius:999px;background:#f3f4f6;color:#111827;font-size:.8rem;font-weight:700}
     .kicker{text-transform:uppercase;letter-spacing:.15em;font-weight:600;font-size:.75rem;color:#111827}
 
     [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
@@ -112,15 +124,15 @@
       </div>
       <div class="cards stagger" data-reveal>
         <article class="card horiz">
-          <h3>💚 Revenue Growth</h3>
+          <h3><span class="emoji" aria-hidden="true">💚</span>Revenue Growth</h3>
           <p class="sub">We design bespoke loyalty programs and data systems powered by Meta.</p>
         </article>
         <article class="card horiz">
-          <h3>📲 Product & Efficiency Growth</h3>
+          <h3><span class="emoji" aria-hidden="true">📲</span>Product & Efficiency Growth</h3>
           <p class="sub">We build digital products and automations tailored to each business.</p>
         </article>
         <article class="card horiz">
-          <h3>📈 Capital Growth</h3>
+          <h3><span class="emoji" aria-hidden="true">📈</span>Capital Growth</h3>
           <p class="sub">We help businesses scale through capital raising, fractional CFO services, and strategy.</p>
         </article>
       </div>
@@ -132,35 +144,56 @@
         <span class="pill">1–5 min clips</span>
       </div>
 
-      <!-- Video grid -->
-      <div id="videoGrid" class="grid" data-reveal>
-        <!-- CARD 1 (your only real video currently) -->
-        <div class="card stack video-card" data-loom-id="45f31603ae1849ff97bb9c009d7269a3" title="WhatsApp Stamp Card Demo">
-          <img class="video-thumb" src="/thumbs/loom1.jpg" alt="WhatsApp stamp card demo thumbnail">
-          <div class="play-btn">▶ Play</div>
+      <div class="stack-lg" id="videoList" data-reveal>
+        <!-- Card 1: VALID video (kept your latest Loom ID) -->
+        <div class="card stack video-card" data-loom-id="03d75c4154d04767b579ab71659d4d34" data-thumb="/thumbs/loom1.jpg">
+          <div class="video">
+            <!-- Poster for speed; replaced with iframe on click -->
+            <button class="poster" type="button" aria-label="Play video: WhatsApp Loyalty Flow">
+              <img src="/thumbs/loom1.jpg" alt="WhatsApp stamp card demo thumbnail" loading="lazy" decoding="async">
+              <div class="play-badge">▶ Play</div>
+            </button>
+            <noscript>
+              <iframe src="https://www.loom.com/embed/03d75c4154d04767b579ab71659d4d34" title="Demo: WhatsApp Loyalty Flow" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </noscript>
+          </div>
+          <p class="sub">Meta Loyalty: WhatsApp stamp card for F&amp;B</p>
         </div>
 
-        <!-- CARD 2 (leave empty for now; will auto-hide if no id) -->
-        <div class="card stack video-card" data-loom-id="" title="Second demo">
-          <img class="video-thumb" src="/thumbs/loom2.jpg" alt="Second demo thumbnail">
-          <div class="play-btn">▶ Play</div>
+        <!-- Card 2: EMPTY link for now (auto-hidden) -->
+        <div class="card stack video-card" data-loom-id="" data-thumb="/thumbs/loom2.jpg">
+          <div class="video">
+            <button class="poster" type="button" aria-label="Play video">
+              <img src="/thumbs/loom2.jpg" alt="Second demo thumbnail" loading="lazy" decoding="async">
+              <div class="play-badge">▶ Play</div>
+            </button>
+          </div>
+          <p class="sub">Meta Loyalty: Check-in &amp; member feedback for gyms [COMING SOON]</p>
         </div>
 
-        <!-- More cards (placeholders). They will auto-hide without valid IDs. -->
-        <div class="card stack video-card" data-loom-id="" title="Database enrichment & flows">
-          <img class="video-thumb" src="/thumbs/loom3.jpg" alt="Database enrichment demo thumbnail">
-          <div class="play-btn">▶ Play</div>
+        <!-- More placeholders (optional); they’ll be hidden until you add real IDs -->
+        <div class="card stack video-card" data-loom-id="" data-thumb="/thumbs/loom3.jpg">
+          <div class="video">
+            <button class="poster" type="button" aria-label="Play video">
+              <img src="/thumbs/loom3.jpg" alt="Database enrichment demo thumbnail" loading="lazy" decoding="async">
+              <div class="play-badge">▶ Play</div>
+            </button>
+          </div>
+          <p class="sub">Meta Loyalty: Database enrichment & flows</p>
         </div>
 
-        <div class="card stack video-card" data-loom-id="" title="Stamp-to-offer automation">
-          <img class="video-thumb" src="/thumbs/loom4.jpg" alt="Stamp-to-offer automation thumbnail">
-          <div class="play-btn">▶ Play</div>
+        <div class="card stack video-card" data-loom-id="" data-thumb="/thumbs/loom4.jpg">
+          <div class="video">
+            <button class="poster" type="button" aria-label="Play video">
+              <img src="/thumbs/loom4.jpg" alt="Stamp-to-offer automation thumbnail" loading="lazy" decoding="async">
+              <div class="play-badge">▶ Play</div>
+            </button>
+          </div>
+          <p class="sub">Meta Loyalty: Stamp-to-offer automation</p>
         </div>
       </div>
 
-      <button id="loadMore" class="btn btn-outline load-more" aria-controls="videoGrid" aria-expanded="false" style="display:none">
-        Show more videos
-      </button>
+      <button id="showMore" class="btn btn-outline" style="display:none">Show more videos</button>
       <p class="sub" style="margin-top:.25rem">Only the videos you open are loaded, improving speed.</p>
     </section>
 
@@ -174,7 +207,9 @@
           <div class="stack">
             <a class="btn btn-primary" href="mailto:daniel@thepotentialcompany.com">Email: connect@thepotentialcompany.com</a>
             <a class="btn btn-outline" href="https://www.linkedin.com/in/andersondbk" target="_blank" rel="noopener">Follow on LinkedIn</a>
-            <a class="btn btn-outline" href="https://wa.me/84936094972?text=HEY_TPC!" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a class="btn btn-outline" href="https://wa.me/84936094972?text=HEY_TPC!" target="_blank" rel="noopener">
+              Chat on WhatsApp
+            </a>
           </div>
         </div>
       </div>
@@ -186,10 +221,8 @@
   </footer>
 
   <script>
-    // Footer year
+    // Footer year + reveal-on-scroll
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Reveal-on-scroll
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReduced && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
@@ -205,87 +238,65 @@
       document.querySelectorAll('[data-reveal], .stagger').forEach(el => el.classList.add('is-visible'));
     }
 
-    // === Video logic ===
-    const grid = document.getElementById('videoGrid');
-    const loadMoreBtn = document.getElementById('loadMore');
+    // ==== Loom mount: keep look, but load fast ====
     const MAX_VISIBLE = 2; // show at most 2 videos initially
+    const list = document.getElementById('videoList');
+    const showMoreBtn = document.getElementById('showMore');
 
-    // Helper: is a Loom ID valid?
-    const isValidId = (id) => id && !/^LOOM_ID/i.test(id.trim());
+    const isValid = (id) => !!id && !/^LOOM_ID/i.test(id.trim());
 
-    // 1) Hide cards without valid IDs
-    const cards = Array.from(grid.querySelectorAll('.video-card'));
+    // Collect and filter cards (hide those without valid Loom IDs)
+    const allCards = Array.from(list.querySelectorAll('.video-card'));
     const validCards = [];
-    cards.forEach(card => {
-      const id = card.dataset.loomId || '';
-      if (!isValidId(id)) {
-        card.classList.add('hidden'); // auto-hide empty/placeholder cards
-      } else {
-        validCards.push(card);
+    allCards.forEach(card => {
+      const id = (card.dataset.loomId || '').trim();
+      if (!isValid(id)) {
+        card.style.display = 'none'; // auto-hide empty/placeholder cards
+        return;
       }
+      validCards.push(card);
     });
 
-    // 2) Enforce max 2 visible initially; hide the rest
-    validCards.forEach((card, idx) => {
-      if (idx >= MAX_VISIBLE) card.classList.add('hidden');
+    // Limit visible to MAX_VISIBLE
+    validCards.forEach((card, i) => {
+      if (i >= MAX_VISIBLE) card.style.display = 'none';
     });
 
-    // 3) Show "Show more" button only if more than MAX_VISIBLE valid videos
+    // Show "Show more" only if more than MAX_VISIBLE
     if (validCards.length > MAX_VISIBLE) {
-      loadMoreBtn.style.display = 'block';
+      showMoreBtn.style.display = 'inline-block';
+      showMoreBtn.addEventListener('click', () => {
+        validCards.forEach(card => card.style.display = '');
+        showMoreBtn.style.display = 'none';
+      });
     }
 
-    // Click-to-load with autoplay (muted) for a better "instant" feel
-    function mountLoomIframe(card) {
-      const id = card.dataset.loomId;
-      if (!isValidId(id)) return;
-
+    // Replace poster with iframe on click (autoplay muted)
+    function mountIframe(container, loomId) {
       const iframe = document.createElement('iframe');
-      // Autoplay muted for smoother UX; playsinline to avoid full-screen jumps on mobile
-      iframe.src = `https://www.loom.com/embed/${id}?autoplay=1&muted=1`;
+      iframe.src = `https://www.loom.com/embed/${loomId}?autoplay=1&muted=1`;
       iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      iframe.setAttribute('webkitallowfullscreen', '');
+      iframe.setAttribute('mozallowfullscreen', '');
       iframe.setAttribute('allowfullscreen', '');
-      iframe.setAttribute('playsinline', '');
       iframe.setAttribute('loading', 'lazy');
+      iframe.title = 'Loom video';
       iframe.style.position = 'absolute';
-      iframe.style.top = '0';
-      iframe.style.left = '0';
+      iframe.style.inset = '0';
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.border = '0';
-
-      // Create an aspect-ratio wrapper so the iframe fills nicely
-      const wrap = document.createElement('div');
-      wrap.style.position = 'relative';
-      wrap.style.paddingBottom = '62.5%';
-      wrap.style.height = '0';
-      wrap.appendChild(iframe);
-
-      card.replaceChildren(wrap);
-      card.style.cursor = 'default';
+      container.replaceChildren(iframe);
     }
 
-    // Delegate click to mount iframe with autoplay
-    grid.addEventListener('click', (e) => {
-      const card = e.target.closest('.video-card');
-      if (!card || card.classList.contains('hidden')) return;
-      // If it's still a thumbnail (no iframe yet), mount the embed
-      if (!card.querySelector('iframe')) {
-        mountLoomIframe(card);
-      }
-    });
-
-    // "Show more videos" reveals the rest (valid ones only)
-    loadMoreBtn.addEventListener('click', () => {
-      let revealed = 0;
-      validCards.forEach((card) => {
-        if (card.classList.contains('hidden')) {
-          card.classList.remove('hidden');
-          revealed++;
-        }
-      });
-      loadMoreBtn.setAttribute('aria-expanded', 'true');
-      loadMoreBtn.style.display = 'none'; // hide after revealing all
+    list.addEventListener('click', (e) => {
+      const poster = e.target.closest('.poster');
+      if (!poster) return;
+      const card = poster.closest('.video-card');
+      const loomId = (card.dataset.loomId || '').trim();
+      if (!isValid(loomId)) return;
+      const videoBox = poster.closest('.video');
+      mountIframe(videoBox, loomId);
     });
   </script>
 </body>
