@@ -28,7 +28,7 @@
     header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0}
     .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.2px}
-    .dot{width:.8rem;height:.8rem;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--orange));box-shadow:0 0 0 4px rgba(132,204,22,.15)}
+
     nav a{padding:.5rem .75rem;border-radius:10px;color:var(--muted);font-weight:500}
     @media (max-width: 640px){
       nav a[href="#growth"], nav a[href="#demos"]{display:none}
@@ -73,10 +73,13 @@
     @keyframes reveal{to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
+
 <body>
   <header>
     <div class="container nav" data-reveal>
-      <a class="brand" href="#top"><span class="dot"></span><span>The Potential Company</span></a>
+      <a class="brand" href="#top">
+        <img src="TPC_logo_white.png" alt="The Potential Company" style="height:32px;">
+      </a>
       <nav>
         <a href="#growth">Growth</a>
         <a href="#demos">Content</a>
@@ -123,7 +126,7 @@
       </div>
 
       <div class="stack-lg" id="videoList" data-reveal>
-        <!-- Autoplay Loom video -->
+
         <div class="card stack video-card" data-loom-id="03d75c4154d04767b579ab71659d4d34">
           <div class="video">
             <iframe src="https://www.loom.com/embed/45f31603ae1849ff97bb9c009d7269a3?autoplay=1&muted=1"
@@ -134,7 +137,6 @@
           <p class="sub">Meta Loyalty: WhatsApp stamp card for F&amp;B</p>
         </div>
 
-        <!-- Empty placeholders hidden automatically -->
         <div class="card stack video-card" data-loom-id="">
           <div class="video"></div>
         </div>
@@ -164,7 +166,6 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // reveal animation
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReduced && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
@@ -180,7 +181,6 @@
       document.querySelectorAll('[data-reveal], .stagger').forEach(el => el.classList.add('is-visible'));
     }
 
-    // hide any empty video cards
     document.querySelectorAll('.video-card').forEach(card=>{
       const id=(card.dataset.loomId||'').trim();
       if(!id) card.style.display='none';
