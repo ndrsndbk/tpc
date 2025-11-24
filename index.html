@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Potential Company</title>
   <meta name="description" content="Helping Good businesses reach their potential. Demos, concepts, and contact." />
-  <meta name="theme-color" content="#84CC16" />
+  <meta name="theme-color" content="#1F7050" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,52 +17,63 @@
   <style>
     *,*::before,*::after{box-sizing:border-box}
     html:focus-within{scroll-behavior:smooth}
-    body{margin:0;font-family:"Instrument Sans",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";line-height:1.6;background:#fff;color:#0b1220}
+    body{margin:0;font-family:"Instrument Sans",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";line-height:1.6;background:#FAF8F7;color:#1A1A1A}
     a{color:inherit;text-decoration:none}
 
-    :root{--lime:#84CC16;--orange:#F97316;--muted:#586070;--bd:#e5e7eb;--shadow:0 4px 20px rgba(0,0,0,.08)}
+    :root{--lime:#1F7050;--orange:#DCA631;--muted:#1A1A1A;--bd:#e5e7eb;--shadow:0 4px 20px rgba(0,0,0,.08)}
 
     .container{width:min(1024px,92%);margin-inline:auto}
     .stack{display:grid;gap:1rem}
     .stack-lg{gap:2rem}
 
-    header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd)}
+    strong{color:#1F7050}
+
+    header{position:sticky;top:0;z-index:30;background:rgba(250,248,247,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0}
     .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.2px}
 
-    nav a{padding:.5rem .75rem;border-radius:10px;color:var(--muted);font-weight:500}
+    nav a{padding:.5rem .75rem;border-radius:10px;color:#1A1A1A;font-weight:500;border-bottom:2px solid transparent}
     @media (max-width: 640px){
       nav a[href="#growth"], nav a[href="#demos"]{display:none}
     }
-    nav a:hover{color:#0b1220;background:#f3f4f6}
+    nav a:hover{color:var(--orange);background:#FAF8F7;border-bottom-color:var(--orange)}
 
     section{padding:2.75rem 0}
     .hero{min-height:calc(100svh - 64px);display:grid;place-items:center;text-align:center}
     .title{font-size:clamp(2rem,2.2rem + 1vw,3rem);line-height:1.1;margin:.4rem 0;font-weight:700}
     .sub{color:var(--muted);max-width:56ch;margin-inline:auto;font-weight:400}
     .cta{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
-    .btn{padding:.8rem 1.1rem;border-radius:14px;border:1px solid var(--bd);font-weight:600;transition:all .2s ease}
-    .btn-primary{background:linear-gradient(135deg,var(--lime),var(--orange));border:none;color:#0b1220}
-    .btn-outline{background:#fff;color:#0b1220}
-    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+    .btn{padding:.8rem 1.1rem;border-radius:14px;border:1px solid var(--bd);font-weight:600;transition:all 180ms ease;color:#1A1A1A;background:transparent}
+    .btn-primary{background:linear-gradient(135deg,#1F7050,#2A8A62);border:none;color:#FAF8F7;box-shadow:var(--shadow)}
+    .btn-outline{background:#FAF8F7;color:#1F7050;border:1.5px solid #1F7050}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(31,112,80,.18)}
+    .btn-primary:hover,.btn-primary:active{background:linear-gradient(135deg,#1F7050,#DCA631);box-shadow:0 8px 26px rgba(31,112,80,.22)}
+    .btn-outline:hover,.btn-outline:active{background:#1F7050;color:#FAF8F7;border-color:#1F7050}
 
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
     .section-head h2{margin:0;font-size:clamp(1.25rem,1rem + 1vw,1.9rem);font-weight:600}
-    .pill{display:inline-flex;padding:.3rem .7rem;border-radius:999px;background:#f3f4f6;color:#111827;font-size:.8rem;font-weight:700}
+    .pill{display:inline-flex;padding:.3rem .7rem;border-radius:999px;background:var(--orange);color:#1A1A1A;font-size:.8rem;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .pill:hover{background:#1F7050;color:#FAF8F7}
 
     .cards{display:grid;gap:1.5rem}
     @media (min-width:720px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (min-width:1200px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    .card{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:1.2rem;box-shadow:var(--shadow);transition:transform .3s ease}
+    .card{background:#FAF8F7;border:1px solid rgba(26,26,26,.08);border-radius:18px;padding:1.2rem;box-shadow:0 10px 30px rgba(0,0,0,.06);transition:transform .3s ease}
     .card:hover{transform:translateY(-4px)}
-    .card h3{margin:.25rem 0 .25rem;font-weight:600}
+    .card h3{margin:.25rem 0 .25rem;font-weight:600;color:#1A1A1A}
+    .cards .card:nth-child(1) h3{color:#1F7050}
+    .cards .card:nth-child(2) h3{color:#DCA631}
+    .cards .card:nth-child(3) h3{color:#1F7050}
 
-    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--bd);background:#000}
+    .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(26,26,26,.08);background:#000}
     .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
     .stack-lg>.card:not(:first-child){margin-top:2rem}
 
+    #contact .card{background:linear-gradient(135deg,#1F7050,#DCA631);border:1px solid #DCA631;color:#FAF8F7;box-shadow:0 12px 28px rgba(31,112,80,.25)}
+    #contact .card .sub,#contact .card .kicker{color:#FAF8F7}
+
     footer{padding:2rem 0;color:var(--muted);border-top:1px solid var(--bd);text-align:center;font-weight:400}
-    .kicker{text-transform:uppercase;letter-spacing:.15em;font-weight:600;font-size:.75rem;color:#111827}
+    .kicker{text-transform:uppercase;letter-spacing:.15em;font-weight:600;font-size:.75rem;color:#1A1A1A}
 
     [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
     [data-reveal].is-visible{opacity:1;transform:translateY(0)}
@@ -126,7 +137,7 @@
         <h2>Demos & Docs</h2><span class="pill">1–5 min clips</span>
       </div>
 
-      <div class="stack-lg" id="videoList" data-reveal>
+      <div class="stack-lg" id="videoList" data-reveal">
 
         <div class="card stack video-card" data-loom-id="03d75c4154d04767b579ab71659d4d34">
           <div class="video">
